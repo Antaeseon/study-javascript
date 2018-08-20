@@ -16,13 +16,14 @@
       ];
       var word=words[Math.floor(Math.random()*words.length)];
       var answerArray=[];
+      var guesses=20;
       for(var i=0;i<word.length;i++){
         answerArray[i] ="_";
       }
 
       var remainingLetter=word.length;
 
-      while(remainingLetter>0){
+      while(remainingLetter>0&&guesses>0){
         alert(answerArray.join(" "));
 
         var guess=prompt("글자를 입력하세요 취소를 누르면 게임을 멈춥니다.");
@@ -31,8 +32,10 @@
         }else if(guess.length!==1){
           alert("한 글자만 입력하세요.");
         }else{
+          guess=guess.toLowerCase();
+          guesses--;
           for(var j=0;j<word.length;j++){
-            if(word[j]===guess){
+            if(word[j]===guess&&answerArray[j]==="_"){
               answerArray[j]=guess;
               remainingLetter--;
             }
