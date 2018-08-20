@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>행맨!</title>
+  </head>
+  <body>
+    <h1>행맨!</h1>
+
+    <script>
+      var words=[
+        "javascript",
+        "monkey",
+        "amazing",
+        "pankake"
+      ];
+      var word=words[Math.floor(Math.random()*words.length)];
+      var answerArray=[];
+      for(var i=0;i<word.length;i++){
+        answerArray[i] ="_";
+      }
+
+      var remainingLetter=word.length;
+
+      while(remainingLetter>0){
+        alert(answerArray.join(" "));
+
+        var guess=prompt("글자를 입력하세요 취소를 누르면 게임을 멈춥니다.");
+        if(guess===null){
+          break;
+        }else if(guess.length!==1){
+          alert("한 글자만 입력하세요.");
+        }else{
+          for(var j=0;j<word.length;j++){
+            if(word[j]===guess){
+              answerArray[j]=guess;
+              remainingLetter--;
+            }
+          }
+        }
+      }
+      if(remainingLetter===0){
+      alert(answerArray.join(" "));
+      alert("잘하셨어요! 정답은 "+ word+"입니다.");
+    }else{
+      alert("아쉽군요! 정답은 "+ word+"입니다.");
+
+    }
+    </script>
+  </body>
+</html>
