@@ -8,47 +8,75 @@
     <h1>행맨!</h1>
 
     <script>
+    var 단어선택 = function(){
       var words=[
         "javascript",
         "monkey",
         "amazing",
         "pankake"
       ];
-      var word=words[Math.floor(Math.random()*words.length)];
+      return words[Math.floor(Math.random()*words.length)];
+    };
+
+    var 정답배열설정 = function(word){
       var answerArray=[];
-      var guesses=20;
       for(var i=0;i<word.length;i++){
         answerArray[i] ="_";
       }
 
-      var remainingLetter=word.length;
+    };
 
-      while(remainingLetter>0&&guesses>0){
-        alert(answerArray.join(" "));
+    var 플레이어진행상황표시 = function(answerArray){
+      alert(answerArray.join(" "));
 
-        var guess=prompt("글자를 입력하세요 취소를 누르면 게임을 멈춥니다.");
-        if(guess===null){
-          break;
-        }else if(guess.length!==1){
-          alert("한 글자만 입력하세요.");
-        }else{
-          guess=guess.toLowerCase();
-          guesses--;
-          for(var j=0;j<word.length;j++){
-            if(word[j]===guess&&answerArray[j]==="_"){
-              answerArray[j]=guess;
-              remainingLetter--;
-            }
-          }
+    };
+
+    var 정답입력 = function(){
+      return prompt("글자를 입력하세요 취소를 누르면 게임을 멈춥니다.");
+    }
+
+    var 게임상태업데이트 = function(guess,word,answerArray){
+      var rem=0;
+      for(var j=0;j<word.length;j++){
+        if(word[j]===guess&&answerArray[j]==="_"){
+          answerArray[j]=guess;
+          rem++;
         }
       }
+      return rem;
+    };
+
+    var 정답표시축하 = function(word,remainingLetter){
       if(remainingLetter===0){
       alert(answerArray.join(" "));
       alert("잘하셨어요! 정답은 "+ word+"입니다.");
     }else{
       alert("아쉽군요! 정답은 "+ word+"입니다.");
-
     }
+
+    };
+      var guesses=20;
+
+      var word= 단어선택();
+      var answerArray=정답배열설정(word);
+
+
+      var remainingLetter=word.length;
+
+      while(remainingLetter>0&&guesses>0){
+        플레이어진행상황표시(answerArray);
+        var guess=정답입력();
+        if(guess===null){
+          break;
+        }else if(guess.length!==1){
+          alert("한 글자만 입력하세요.");
+        }else{
+          guesses--;
+          guess=guess.toLowerCase();
+          remainingLetter-=게임상태업데이트(guess,word,answerarray);
+        }
+      }
+      정답표시축하(word,remainingLetter);
     </script>
   </body>
 </html>
