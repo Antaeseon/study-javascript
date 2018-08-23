@@ -6,6 +6,7 @@
   </head>
   <body>
     <h1>행맨!</h1>
+    <canvas id="canvas" width="500" height ="500"></canvas>
 
     <script>
     var 단어선택 = function(){
@@ -23,7 +24,7 @@
       for(var i=0;i<word.length;i++){
         answerArray[i] ="_";
       }
-
+      return answerArray;
     };
 
     var 플레이어진행상황표시 = function(answerArray){
@@ -38,10 +39,15 @@
     var 게임상태업데이트 = function(guess,word,answerArray){
       var rem=0;
       for(var j=0;j<word.length;j++){
+        if(word[j]===guess&&answerArray[j]===guess){
+          rem--;
+          break;
+        }
         if(word[j]===guess&&answerArray[j]==="_"){
           answerArray[j]=guess;
           rem++;
         }
+
       }
       return rem;
     };
@@ -55,7 +61,44 @@
     }
 
     };
-      var guesses=20;
+    var drawSegment = function (incorrectGuesses) {
+      ctx.lineWidth = 4;
+
+      if (incorrectGuesses === 0) {
+        ctx.strokeRect(20, 20, 20, 20);
+      } else if (incorrectGuesses === 1) {
+        ctx.beginPath();
+        ctx.moveTo(30, 40);
+        ctx.lineTo(30, 80);
+        ctx.stroke();
+      } else if (incorrectGuesses === 2) {
+        ctx.beginPath();
+        ctx.moveTo(30, 80);
+        ctx.lineTo(10, 110);
+        ctx.stroke();
+      } else if (incorrectGuesses === 3) {
+        ctx.beginPath();
+        ctx.moveTo(30, 80);
+        ctx.lineTo(50, 110);
+        ctx.stroke();
+      } else if (incorrectGuesses === 4) {
+        ctx.beginPath();
+        ctx.moveTo(30, 60);
+        ctx.lineTo(10, 50);
+        ctx.stroke();
+      } else if (incorrectGuesses === 5) {
+        ctx.beginPath();
+        ctx.moveTo(30, 60);
+        ctx.lineTo(50, 50);
+        ctx.stroke();
+      }
+    };
+
+      var canvas = document.getElementById("canvas");
+      var ctx=canvas.getContext("2d");
+
+
+      var guesses=0;
 
       var word= 단어선택();
       var answerArray=정답배열설정(word);
@@ -63,7 +106,7 @@
 
       var remainingLetter=word.length;
 
-      while(remainingLetter>0&&guesses>0){
+      while(remainingLetter>0&&guesses<6){
         플레이어진행상황표시(answerArray);
         var guess=정답입력();
         if(guess===null){
@@ -71,9 +114,15 @@
         }else if(guess.length!==1){
           alert("한 글자만 입력하세요.");
         }else{
-          guesses--;
           guess=guess.toLowerCase();
-          remainingLetter-=게임상태업데이트(guess,word,answerarray);
+          var update=게임상태업데이트(guess,word,answerArray);
+          if(update===0){
+            drawSegment(guesses);
+            guesses++;
+          }else if(update===-1){
+            continue;
+          }
+          remainingLetter-=update;
         }
       }
       정답표시축하(word,remainingLetter);
