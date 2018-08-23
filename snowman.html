@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Canvas</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="500" height ="500"></canvas>
+    <script>
+    var circle=function(x,y,radius,fill){
+      ctx.beginPath();
+      ctx.arc(x,y,radius,0,Math.PI*2,false);
+      if(fill===false){
+        ctx.stroke();
+      }else{
+        ctx.fill();
+      }
+    }
+    var drawSnowman=function(x,y){
+      ctx.lineWidth=2;
+      ctx.strokeStyle="Black";
+      circle(x,y,30,false);
+      circle(x,y+70,40,false);
+
+      circle(x-10,y-10,5,true);
+      circle(x+10,y-10,5,true);
+      circle(x,y+50,5,true);
+      circle(x,y+70,5,true);
+      circle(x,y+90,5,true);
+      ctx.fillStyle="Yellow";
+      circle(x,y,5,true);
+
+    }
+      var canvas = document.getElementById("canvas");
+      var ctx=canvas.getContext("2d");
+      drawSnowman(100,100);
+    </script>
+  </body>
+</html>
